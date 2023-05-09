@@ -6,11 +6,31 @@ function App() {
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const [email, setEmail] = useState('');
+    const [dataFormAPI, setDataFormAPI] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
         e.preventDefault();
-        console.log({ name, age, email });
-        // You can perform additional actions here, like submitting the form data to a server
+        const makeData = {name, age, email};
+        console.log( name, age, email );
+        // console.log(makeData);
+
+        fetch('http://localhost:4000/users', {
+            method: 'POST',
+            headers:{
+                'content-type' : 'application/json'
+            },
+            body: JSON.stringify(makeData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                const allUser = [...user, data];
+                setUser(allUser);
+                setName('');
+                setAge('');
+                setEmail('');
+            })
+
     };
 
       useEffect( () => {

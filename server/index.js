@@ -5,6 +5,7 @@ const cors = require('cors');
 
 //middleware
 app.use(cors());
+app.use(express.json());
 
 const people = [
     {
@@ -30,6 +31,16 @@ const people = [
 
 app.get('/', (req, res) => {
     res.send(people);
+})
+
+app.post('/users', (req, res) => {
+    console.log('data found');
+    const addUser = req.body;
+    console.log(addUser);
+    addUser.id = 452 + people.length;
+    console.log(addUser);
+    people.push(addUser);
+    res.send(addUser);
 })
 
 app.listen(port, () => {
