@@ -4,7 +4,8 @@ import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import AddUser from "./component/AddUser.jsx";
-import ShowUser from "./component/ShowUser.jsx";
+import AllUser from "./component/AllUser.jsx";
+import EditUser from "./component/EditUser.jsx";
 
 const router = createBrowserRouter([
     {
@@ -13,11 +14,16 @@ const router = createBrowserRouter([
         children:[
             {
                 path: '/',
-                element: <ShowUser />
+                element: <AllUser />
             },
             {
                 path: '/create-user',
                 element: <AddUser />
+            },
+            {
+                path: '/update-user/:id',
+                element: <EditUser />,
+                loader: ({params}) => fetch(`http://localhost:4000/user/${params.id}`)
             }
         ]
     },

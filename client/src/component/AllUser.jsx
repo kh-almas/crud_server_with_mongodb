@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from "react-router-dom";
 
-const ShowUser = () => {
-    const data = [
-        { id: 1, name: 'John Doe', age: 25, gmail: 'johndoe@gmail.com' },
-        { id: 2, name: 'Jane Smith', age: 30, gmail: 'janesmith@gmail.com' },
-        { id: 3, name: 'Bob Johnson', age: 40, gmail: 'bobjohnson@gmail.com' },
-    ];
-
+const AllUser = () => {
     const [user, setUser] = useState([]);
 
     useEffect(() => {
@@ -14,6 +9,7 @@ const ShowUser = () => {
             .then(res =>  res.json())
             .then(data => setUser(data))
     }, [])
+
 
     return (
         <div className="flex flex-col">
@@ -56,9 +52,9 @@ const ShowUser = () => {
                                         <div className="text-sm text-gray-900">{info.gmail}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+                                        <Link to={`/update-user/${info._id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
                                             Edit
-                                        </button>
+                                        </Link>
                                         <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 ml-2 rounded">
                                             Delete
                                         </button>
@@ -74,4 +70,4 @@ const ShowUser = () => {
     );
 };
 
-export default ShowUser;
+export default AllUser;

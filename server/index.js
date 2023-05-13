@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 4000;
@@ -60,12 +60,38 @@ async function run() {
             res.send(user);
         })
 
+        app.get('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)};
+            const userInfo = await userCollection.findOne(query);
+            res.send(userInfo);
+        })
+
+        app.put('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const data = req.body;
+            const filter = {_id: new ObjectId(id)};
+            const options = { upsert: true };
+            const updateUser = {
+                $set: {
+                    name: data.name,
+                    age: data.age,
+                    email: data.email,
+                },
+            }
+            const result = await userCollection.updateOne(filter, updateUser, options);
+            res.send(result);
+        })
+
         app.post('/create', async (req, res) => {
             const addUser = req.body;
             const result = await userCollection.insertOne(addUser);
             res.send(result);
             console.log(addUser);
         })
+
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -82,15 +108,15 @@ app.get('/', (req, res) => {
     res.send(people);
 })
 
-app.post('/users', (req, res) => {
-    console.log('data found');
-    const addUser = req.body;
-    console.log(addUser);
-    addUser.id = 452 + people.length;
-    console.log(addUser);
-    people.push(addUser);
-    res.send(addUser);
-})
+// app.post('/users', (req, res) => {
+//     console.log('data found');
+//     const addUser = req.body;
+//     console.log(addUser);
+//     addUser.id = 452 + people.length;
+//     console.log(addUser);
+//     people.push(addUser);
+//     res.send(addUser);
+// })
 
 app.listen(port, () => {
     console.log('server is open in port 4000');
