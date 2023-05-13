@@ -53,6 +53,13 @@ async function run() {
         await client.connect();
         const database = client.db('crud');
         const userCollection = database.collection('users');
+
+        app.get('/all-users', async (req, res) => {
+            const cursor = userCollection.find();
+            const user = await cursor.toArray();
+            res.send(user);
+        })
+
         app.post('/create', async (req, res) => {
             const addUser = req.body;
             const result = await userCollection.insertOne(addUser);
