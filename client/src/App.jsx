@@ -11,10 +11,10 @@ function App() {
     const handleSubmit = e => {
         e.preventDefault();
         const makeData = {name, age, email};
-        console.log( name, age, email );
+        console.log('send data');
         // console.log(makeData);
 
-        fetch('http://localhost:4000/users', {
+        fetch('http://localhost:4000/create', {
             method: 'POST',
             headers:{
                 'content-type' : 'application/json'
